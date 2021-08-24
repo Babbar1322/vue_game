@@ -44,6 +44,7 @@
                                     @click="login"
                                     long
                                     size="large"
+                                    :loading="loading"
                                     >SignIn</Button
                                 >
                             </div>
@@ -69,10 +70,11 @@ export default {
     data() {
         return {
             form: {
-                email: "",
+                phone: "",
                 password: ""
                 // select: "+91"
-            }
+            },
+            loading: false
         };
     },
     mounted() {
@@ -82,12 +84,14 @@ export default {
     },
     methods: {
         login() {
+            this.loading = true;
             axios
                 .post("/api/login", {
                     phone: this.form.phone,
                     password: this.form.password
                 })
                 .then(res => {
+                    this.loading = false;
                     localStorage.setItem("usertoken", res.data.token);
                     this.phone = "";
                     this.password = "";
@@ -95,6 +99,7 @@ export default {
                     this.$router.push("/play");
                 })
                 .catch(err => {
+                    this.loading = false;
                     console.log(err);
                     this.i("Invalid Creadetial or " + err);
                 });

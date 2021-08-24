@@ -53,7 +53,7 @@
                             </b-row>
                         </div>
                         <div class="text-center mt-5">
-                            <Button type="success" size="large">
+                            <Button type="success" size="large  ">
                                 + Add Bank Card</Button
                             >
                         </div>

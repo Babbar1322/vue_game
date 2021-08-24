@@ -67,13 +67,32 @@
 <script>
 export default {
     data() {
+        // this.getUser().then(res => {
+        //     this.phone = res.user.phone;
+        //     return res;
+        // });
         return {
-            mainProps: { width: 30 }
+            mainProps: { width: 30 },
+            phone: ""
         };
     },
     methods: {
         resetname() {
             this.$router.push("/mine/user/info/nickname");
+        },
+        getUser() {
+            axios
+                .get("api/profile", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.usertoken}`
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 };

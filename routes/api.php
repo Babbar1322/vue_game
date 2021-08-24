@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register','UserController@register');
 Route::post('login','UserController@login');
 Route::get('profile','UserController@getAuthenticatedUser');
+Route::get('user','UserController@getUser');

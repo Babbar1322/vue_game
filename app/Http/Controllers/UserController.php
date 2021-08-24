@@ -61,13 +61,17 @@ class UserController extends Controller
                 return response()->json(['user_not_found'], 400);
             }
         }catch (TokenExpiredException $e){
-            return response()->json(['token_expired'], $e->getStatusCode());
+            return response()->json(['token_expired']);
         }catch (TokenInvalidException $e){
-            return response()->json(['token_invalid'], $e->getStatusCode());
+            return response()->json(['token_invalid']);
         }catch (JWTException $e){
-            return response()->json(['token_absent'], $e->getStatusCode());
+            return response()->json(['token_absent']);
         }
 
         return response()->json(compact('user'));
+    }
+    public function getUser(){
+        $user = JWTAuth::parseToken()->authenticate();
+      dd($user);
     }
 }

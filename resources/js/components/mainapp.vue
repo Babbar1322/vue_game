@@ -25,11 +25,16 @@ export default {
             this.$router.push("/login");
         }
     },
-    created() {
+    mounted() {
+        // if (localStorage.usertoken) {
+        //     this.$router.push("/play");
+        // } else {
+        //     this.$router.push("/login");
+        // }
         if (localStorage.usertoken) {
             this.$router.push("/play");
         } else {
-            this.$router.push("/home");
+            this.$router.push("/login");
         }
     }
 };
