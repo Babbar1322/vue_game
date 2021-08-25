@@ -26,22 +26,10 @@ export default {
         }
     },
     mounted() {
-<<<<<<< HEAD
         if (localStorage.usertoken) {
             this.$router.push("/play");
         } else {
             this.$router.push("/home");
-=======
-        // if (localStorage.usertoken) {
-        //     this.$router.push("/play");
-        // } else {
-        //     this.$router.push("/login");
-        // }
-        if (localStorage.usertoken) {
-            this.$router.push("/play");
-        } else {
-            this.$router.push("/login");
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
         }
     }
 };

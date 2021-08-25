@@ -16,18 +16,11 @@
     </head>
     <body>
         <div id="app">
-<<<<<<< HEAD
             <!-- <mainapp></mainapp> -->
         </div>
 
         <script src="{{mix('/js/app.js')}}"></script>
     </body>
    
-=======
-            <mainapp></mainapp>
-        </div>
-    </body>
-    <script src="{{mix('/js/app.js')}}"></script>
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
 
 </html>

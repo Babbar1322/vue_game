@@ -9,20 +9,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
-<<<<<<< HEAD
         "beyondcode/laravel-websockets": "^1.12",
-=======
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "2",
-<<<<<<< HEAD
         "pusher/pusher-php-server": "~3.0",
-=======
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {

@@ -48,11 +48,7 @@
                                 <b-col cols="6"></b-col>
                                 <b-col cols="3">
                                     <div class="text-right">
-<<<<<<< HEAD
                                         7453462768
-=======
-                                        {{ phone }}
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
                                         <Icon
                                             type="ios-arrow-forward"
                                             size="20"
@@ -72,41 +68,13 @@
 export default {
     data() {
         return {
-<<<<<<< HEAD
             mainProps: { width: 30 }
-=======
-            mainProps: { width: 30 },
-            users: [],
-            phone: ""
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
         };
     },
     methods: {
         resetname() {
             this.$router.push("/mine/user/info/nickname");
         }
-<<<<<<< HEAD
-=======
-    },
-    created() {
-        axios
-            .get("../../api/profile", {
-                headers: {
-                    Authorization: `Bearer ${localStorage.usertoken}`
-                }
-            })
-            .then(res => {
-                if (res.data[0] == "token_expired") {
-                    this.auth = "";
-                    this.$router.push("/login");
-                }
-                console.log(res);
-                this.phone = res.data.user.phone;
-            })
-            .catch(err => {
-                console.log(err);
-            });
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
     }
 };
 </script>

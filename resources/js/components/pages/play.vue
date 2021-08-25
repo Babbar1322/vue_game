@@ -12,15 +12,9 @@
                                     rounded="circle"
                                     src="profile.jpg"
                                 ></b-img>
-<<<<<<< HEAD
                                 <span class="pl-2 " style="color:#12dfe9"
                                     >0.99</span
                                 >
-=======
-                                <span class="pl-2 " style="color:#12dfe9">{{
-                                    balance
-                                }}</span>
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
                             </b-col>
                             <b-col cols="3"></b-col>
                             <b-col cols="3">
@@ -217,64 +211,7 @@
                             <b-col cols="4"> </b-col>
                         </b-row>
                         <div class="mt-2">
-<<<<<<< HEAD
                             <Table height="200" :columns="columns1" :data="data2" />
-=======
-                            <!-- <table class="table table-responsive table-dark">
-                                <thead>
-                                    <tr>
-                                        <th>Period</th>
-                                        <th>Price</th>
-                                        <th>Number</th>
-                                        <th>Result</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>2021876543</td>
-                                        <td>87483</td>
-                                        <td>1</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021876543</td>
-                                        <td>87483</td>
-                                        <td>1</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021876543</td>
-                                        <td>87483</td>
-                                        <td>1</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021876543</td>
-                                        <td>87483</td>
-                                        <td>1</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021876543</td>
-                                        <td>87483</td>
-                                        <td>1</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021876543</td>
-                                        <td>87483</td>
-                                        <td>1</td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table> -->
-
-                            <Table
-                                height="200"
-                                :columns="columns1"
-                                :data="data2"
-                            ></Table>
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
                         </div>
                     </b-card>
                 </b-col>
@@ -290,10 +227,6 @@ import joinmodal from "./joinModal.vue";
 export default {
     data() {
         return {
-<<<<<<< HEAD
-=======
-            balance: "",
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
             mainProps: { width: 35 },
             columns1: [
                 {
@@ -383,43 +316,11 @@ export default {
                 {
                     component: joinmodal
                 },
-<<<<<<< HEAD
                 {
                     msg: val
                 }
             );
         }
-=======
-                { update: this.update },
-
-                {
-                    msg: val,
-                    bal: this.balance
-                }
-            );
-        },
-        update(data) {
-            this.balance = data;
-        }
-    },
-    created() {
-        axios
-            .get("/api/profile", {
-                headers: {
-                    Authorization: `Bearer ${localStorage.usertoken}`
-                }
-            })
-            .then(res => {
-                if (res.data[0] == "token_expired") {
-                    this.auth = "";
-                    this.$router.push("/login");
-                }
-                this.balance = res.data.balance;
-            })
-            .catch(err => {
-                console.log(err);
-            });
->>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
     }
 };
 </script>
