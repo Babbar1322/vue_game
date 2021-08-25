@@ -12,7 +12,7 @@
                                     rounded="circle"
                                     src="profile.jpg"
                                 ></b-img>
-                                <span class="pl-2 text-white">1234565432</span>
+                                <span class="pl-2 text-white">{{phone}}</span>
                             </b-col>
                             <b-col cols="3"></b-col>
                             <b-col cols="2">
@@ -40,7 +40,7 @@
                                 <div class="text-yellow">
                                     <b-icon icon="shop-window"></b-icon>
                                     Balance
-                                    <span style="color:#12dfe9">0.99</span>
+                                    <span style="color:#12dfe9">{{balance}}</span>
                                 </div>
                             </b-col>
                             <b-col cols="3"></b-col>
@@ -159,6 +159,8 @@
 export default {
     data() {
         return {
+            balance:"",
+            phone:"",
             mainProps: { width: 50 }
         };
     },
@@ -183,6 +185,26 @@ export default {
         help() {
             this.$router.push("/chat");
         }
+    },
+    created() {
+        axios
+            .get("/api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.balance = res.data.balance;
+                this.phone = res.data.user.phone;
+                
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 };
 </script>

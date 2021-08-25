@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Middleware;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Auth;
+
 
 use Closure;
 
@@ -15,6 +18,9 @@ class isAdmin
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if(auth()->user()->is_admin == 1){
+            return $next($request);
+        }
+        return redirect('/{slug}')->with('error',"You don't have admin access.");
     }
 }

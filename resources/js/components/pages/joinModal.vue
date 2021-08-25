@@ -27,7 +27,9 @@
                 Total Amount <span class="text-gold">100</span>
             </div>
             <div class="mt-4">
-                <Button type="success" long size="large"> Confirm</Button>
+                <Button type="success" long size="large" @click="submit">
+                    Confirm</Button
+                >
             </div>
         </b-container>
     </div>
@@ -35,9 +37,11 @@
 
 <script>
 export default {
-    props: ["msg"],
+    props: ["msg", "bal"],
     data() {
         return {
+            user_id: "",
+            balance: "",
             data: {
                 amount: 100
             }
@@ -46,7 +50,44 @@ export default {
     methods: {
         amunt(amt) {
             this.data.amount = amt;
+        },
+        submit() {
+            if (this.balance > this.data.amount) {
+                axios
+                    .post("/api/bet/" + this.user_id, {
+                        balance: this.data.amount
+                    })
+                    .then(res => {
+                        console.log(res);
+                        this.$attrs.update(res.data[1]);
+                        this.$FModal.hide();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else {
+                this.i("not enough balance to bet");
+            }
         }
+    },
+    created() {
+        axios
+            .get("/api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.balance = res.data.balance;
+                this.user_id = res.data.user.id;
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 };
 </script>

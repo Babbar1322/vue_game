@@ -18,6 +18,7 @@ import reset from './components/pages/resetpassword.vue';
 import user from './components/pages/user.vue';
 import resetname from './components/pages/resetname.vue';
 
+
 Vue.use(Router);
 const routes = [
     {
@@ -80,6 +81,7 @@ const routes = [
         path:'/mine/user/info/nickname',
         component:resetname
     },
+  
     {
         path:'/:notFound(.*)',
         component:notFound,

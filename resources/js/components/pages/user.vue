@@ -48,7 +48,7 @@
                                 <b-col cols="6"></b-col>
                                 <b-col cols="3">
                                     <div class="text-right">
-                                        7453462768
+                                        {{ phone }}
                                         <Icon
                                             type="ios-arrow-forward"
                                             size="20"
@@ -67,33 +67,35 @@
 <script>
 export default {
     data() {
-        // this.getUser().then(res => {
-        //     this.phone = res.user.phone;
-        //     return res;
-        // });
         return {
             mainProps: { width: 30 },
+            users: [],
             phone: ""
         };
     },
     methods: {
         resetname() {
             this.$router.push("/mine/user/info/nickname");
-        },
-        getUser() {
-            axios
-                .get("api/profile", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.usertoken}`
-                    }
-                })
-                .then(res => {
-                    console.log(res);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
         }
+    },
+    created() {
+        axios
+            .get("../../api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                console.log(res);
+                this.phone = res.data.user.phone;
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 };
 </script>
