@@ -18,6 +18,10 @@ import reset from './components/pages/resetpassword.vue';
 import user from './components/pages/user.vue';
 import resetname from './components/pages/resetname.vue';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
 Vue.use(Router);
 const routes = [
     {
@@ -80,15 +84,28 @@ const routes = [
         path:'/mine/user/info/nickname',
         component:resetname
     },
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
     {
         path:'/:notFound(.*)',
         component:notFound,
     },
 
 ];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
 const router = new Router({
         mode:'history',
         routes
 });
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
 export default router;

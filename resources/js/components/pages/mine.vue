@@ -12,7 +12,11 @@
                                     rounded="circle"
                                     src="profile.jpg"
                                 ></b-img>
+<<<<<<< HEAD
                                 <span class="pl-2 text-white">1234565432</span>
+=======
+                                <span class="pl-2 text-white">{{phone}}</span>
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
                             </b-col>
                             <b-col cols="3"></b-col>
                             <b-col cols="2">
@@ -40,11 +44,19 @@
                                 <div class="text-yellow">
                                     <b-icon icon="shop-window"></b-icon>
                                     Balance
+<<<<<<< HEAD
                                     <span style="color:#12dfe9">0.99</span>
                                 </div>
                             </b-col>
                             <b-col cols="3"></b-col>
                             <b-col cols="3">
+=======
+                                    <span style="color:#12dfe9">{{balance}}</span>
+                                </div>
+                            </b-col>
+                            <b-col cols="3"></b-col>
+                            <b-col cols="2">
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
                                 <div class="text-right">
                                     <Button type="success" to="/wallet"
                                         >Recharge</Button
@@ -159,6 +171,11 @@
 export default {
     data() {
         return {
+<<<<<<< HEAD
+=======
+            balance:"",
+            phone:"",
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
             mainProps: { width: 50 }
         };
     },
@@ -183,6 +200,29 @@ export default {
         help() {
             this.$router.push("/chat");
         }
+<<<<<<< HEAD
+=======
+    },
+    created() {
+        axios
+            .get("/api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.balance = res.data.balance;
+                this.phone = res.data.user.phone;
+                
+            })
+            .catch(err => {
+                console.log(err);
+            });
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
     }
 };
 </script>

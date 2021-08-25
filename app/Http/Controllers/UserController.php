@@ -14,9 +14,20 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Tymon\JWTAuth\JWTManager as JWT;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+<<<<<<< HEAD
 
 class UserController extends Controller
 {
+=======
+use Auth;
+use App\wallet;
+
+class UserController extends Controller
+{
+
+  
+
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
                 'phone' => 'required|string|',
@@ -26,6 +37,11 @@ class UserController extends Controller
             if($validator->fails()){
                 return response()->json($validator->errors(), 400);
             }
+<<<<<<< HEAD
+=======
+            
+          
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
 
             $user = User::create([
                 'name'=> $request->name,
@@ -43,8 +59,15 @@ class UserController extends Controller
         $credentials = $request->all();
         try {
             if(! $token = JWTAuth::attempt($credentials)){
+<<<<<<< HEAD
                     return response()->json(['error'=>'invalid Credentials'], 400);
             }
+=======
+               
+                    return response()->json(['error'=>'invalid Credentials'], 400);
+            }
+            
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
         }catch (JWTException $e){
             return response()->json(['error'=>'could_not_create_token'], 500);
         }
@@ -59,6 +82,7 @@ class UserController extends Controller
                 return response()->json(['user_not_found'], 400);
             }
         }catch (TokenExpiredException $e){
+<<<<<<< HEAD
             return response()->json(['token_expired'], $e->getStatusCode());
         }catch (TokenInvalidException $e){
             return response()->json(['token_invalid'], $e->getStatusCode());
@@ -68,4 +92,115 @@ class UserController extends Controller
 
         return response()->json(compact('user'));
     }
+=======
+            return response()->json(['token_expired']);
+        }catch (TokenInvalidException $e){
+            return response()->json(['token_invalid']);
+        }catch (JWTException $e){
+            return response()->json(['token_absent']);
+        }
+        $credit = wallet::where('credit',1)->where('user_id',$user->id)->sum('balance');
+        $debit = wallet::where('debit',1)->where('user_id',$user->id)->sum('balance');
+        $balance = $credit - $debit;
+        // $balance = wallet::where('user_id',$user->id)->where('credit',1)->sum('balance');
+
+        return response()->json(compact(['user','balance']));
+    }
+
+    public function adminLogin(){
+        if(Auth::check()){
+            return redirect('admin/dashboard');
+        }
+        return view('admin.login');
+    }
+
+    public function postLogin(Request $request){
+        $input = $request->all();
+   
+        
+        // $this->validate($request, [
+        //     'phone' => 'required',
+        //     'password' => 'required',
+        // ]);
+   
+        if(auth()->attempt(array('phone' => $input['phone'], 'password' => $input['password'])))
+        {
+            if (auth()->user()->is_admin == 1) {
+                return redirect("admin/dashboard");
+            }else{
+               
+                return redirect()->route('home');
+            }
+        }else{
+            return redirect("admin/login")
+                ->with('error','Email-Address And Password Are Wrong.');
+        }
+    }
+   
+    public function getUsers(){
+        $users = User::where('is_admin','!=',1)->get();
+        return view('admin.users',compact('users'));
+    }
+  
+    public function updateUser($id, Request $request){
+        $user = User::findOrFail($id);
+        $wall = wallet::where('user_id',$id)->first();
+        if(!$wall){
+        $wallet = wallet::create([
+            'user_id' => $id,
+            'balance'=>$request->bal
+        ]);
+    }
+        else{
+            $wallet = wallet::where('user_id',$id)->update([
+                'balance'=>$request->bal
+            ]);
+        }
+        return redirect()->route('admin.users');
+    }
+
+    public function balcut($id){
+        $user = User::findOrFail($id);
+        return view('admin.cutBal',compact('user'));
+    }
+    public function baladd($id){
+        $user = User::findOrFail($id);
+        return view('admin.addBal',compact('user'));
+    }
+    public function addBalance(Request $request,$id){
+        $wallet = new wallet();
+        $wallet->user_id = $id;
+        $wallet->credit = 1;
+        $wallet->balance = $request->bal;
+        $wallet->save();
+        return redirect()->route('admin.users');
+    }
+    public function cutBalance(Request $request,$id){
+        $bal = wallet::where('user_id',$id)->where('credit',1)->sum('balance');
+        if($bal > $request->bal){
+        $wallet = new wallet();
+        $wallet->user_id = $id;
+        $wallet->debit = 1;
+        $wallet->balance = $request->bal;
+        $wallet->save();
+        return redirect()->route('admin.users');
+        }
+        else{
+            return redirect()->back()->with('error','not enough balance to debit');
+        }
+    }
+
+    public function bet($id,Request $request){
+        $wallet = new wallet();
+        $wallet->user_id = $id;
+        $wallet->debit = 1;
+        $wallet->balance = $request->balance;
+        $wallet->save();
+        $credit = wallet::where('credit',1)->where('user_id',$id)->sum('balance');
+        $debit = wallet::where('debit',1)->where('user_id',$id)->sum('balance');
+        $balance = $credit - $debit;
+        return response()->json([200,$balance]);
+    }
+    
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
 }

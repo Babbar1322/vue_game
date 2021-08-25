@@ -47,4 +47,12 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+<<<<<<< HEAD
+=======
+    public function wallet(){
+        return $this->hasOne('App\wallet');
+    }
+   
+
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
 }

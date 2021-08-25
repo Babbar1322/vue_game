@@ -53,7 +53,11 @@
                             </b-row>
                         </div>
                         <div class="text-center mt-5">
+<<<<<<< HEAD
                             <Button type="success" size="large">
+=======
+                            <Button type="success" size="large  ">
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
                                 + Add Bank Card</Button
                             >
                         </div>

@@ -76,7 +76,11 @@ export default {
         EventBus.$on("logged-in", status => {
             this.auth - status;
         });
+<<<<<<< HEAD
         if (!localStorage.usertoken && this.$route.path != "/login") {
+=======
+        if (!localStorage.usertoken) {
+>>>>>>> 73f99a4262d295e758b31409c78a0408d599d5a6
             this.auth = "";
             // this.$router.push("/login");
         } else if (localStorage.usertoken) {
