@@ -19,4 +19,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('register','UserController@register');
 Route::post('login','UserController@login');
+<<<<<<< HEAD
 Route::get('profile','UserController@getAuthenticatedUser');
+=======
+
+
+Route::get('profile','UserController@getAuthenticatedUser');
+Route::get('user','UserController@getUser');
+
+Route::post('bet/{id}','UserController@bet');
+Route::post('resetpwd/{id}','UserController@resetpwd');
+Route::post('resetname/{id}','UserController@resetname');
+Route::post('upload/{id}','UserController@upload');
+>>>>>>> branch1

@@ -10,7 +10,7 @@
                                 <b-img
                                     v-bind="mainProps"
                                     rounded="circle"
-                                    src="profile.jpg"
+                                    :src="`${image}`"
                                 ></b-img>
                                 <span class="pl-2 text-white">1234565432</span>
                             </b-col>
@@ -159,6 +159,12 @@
 export default {
     data() {
         return {
+<<<<<<< HEAD
+=======
+            image:"profile.jpg",
+            balance:"",
+            phone:"",
+>>>>>>> branch1
             mainProps: { width: 50 }
         };
     },
@@ -183,6 +189,34 @@ export default {
         help() {
             this.$router.push("/chat");
         }
+<<<<<<< HEAD
+=======
+    },
+    created() {
+        axios
+            .get("/api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.balance = res.data.balance;
+                this.phone = res.data.user.phone;
+                   if (res.data.user.image == "" || res.data.user.image == null) {
+                    this.image = "profile.jpg";
+                } else {
+                    this.image = "/uploads/" + res.data.user.image;
+                }
+                
+            })
+            .catch(err => {
+                console.log(err);
+            });
+>>>>>>> branch1
     }
 };
 </script>

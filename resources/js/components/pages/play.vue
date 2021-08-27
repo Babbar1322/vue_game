@@ -10,7 +10,7 @@
                                 <b-img
                                     v-bind="mainProps"
                                     rounded="circle"
-                                    src="profile.jpg"
+                                    :src="`${image}`"
                                 ></b-img>
                                 <span class="pl-2 " style="color:#12dfe9"
                                     >0.99</span
@@ -227,6 +227,11 @@ import joinmodal from "./joinModal.vue";
 export default {
     data() {
         return {
+<<<<<<< HEAD
+=======
+            image: "profile.jpg",
+            balance: "",
+>>>>>>> branch1
             mainProps: { width: 35 },
             columns1: [
                 {
@@ -321,6 +326,32 @@ export default {
                 }
             );
         }
+<<<<<<< HEAD
+=======
+    },
+    created() {
+        axios
+            .get("/api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.balance = res.data.balance;
+                if (res.data.user.image == "" || res.data.user.image == null) {
+                    this.image = "profile.jpg";
+                } else {
+                    this.image = "/uploads/" + res.data.user.image;
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+>>>>>>> branch1
     }
 };
 </script>

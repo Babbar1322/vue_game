@@ -15,7 +15,7 @@
                     </b-row>
                     <div class="mt-4">
                         <div role="button" class="text-white">
-                            <b-row class="pb-2">
+                            <b-row class="pb-2" @click="avatar">
                                 <b-col cols="3">
                                     <div>
                                         Avatar
@@ -27,7 +27,7 @@
                                         <b-img
                                             v-bind="mainProps"
                                             rounded="circle"
-                                            src="../profile.jpg"
+                                            :src="`/uploads/${image}`"
                                         ></b-img>
                                         <Icon
                                             type="ios-arrow-forward"
@@ -48,7 +48,11 @@
                                 <b-col cols="6"></b-col>
                                 <b-col cols="3">
                                     <div class="text-right">
+<<<<<<< HEAD
                                         7453462768
+=======
+                                        {{ name }}
+>>>>>>> branch1
                                         <Icon
                                             type="ios-arrow-forward"
                                             size="20"
@@ -68,13 +72,54 @@
 export default {
     data() {
         return {
+<<<<<<< HEAD
             mainProps: { width: 30 }
+=======
+            mainProps: { width: 30 },
+            users: [],
+            name: "",
+            image: "../profile.jpg"
+>>>>>>> branch1
         };
     },
     methods: {
         resetname() {
             this.$router.push("/mine/user/info/nickname");
+        },
+        avatar() {
+            this.$router.push("/mine/user/info/avatar");
         }
+<<<<<<< HEAD
+=======
+    },
+    created() {
+        axios
+            .get("../../api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                if (res.data.user.image == "" || res.data.user.image == null) {
+                    this.image = "../profile.jpg";
+                } else {
+                    this.image = "../uploads/" + res.data.user.image;
+                }
+                console.log(res);
+                if (res.data.user.name == "" || res.data.user.name == null) {
+                    this.name = res.data.user.phone;
+                } else {
+                    this.name = res.data.user.name;
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+>>>>>>> branch1
     }
 };
 </script>
