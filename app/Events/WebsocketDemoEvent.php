@@ -22,12 +22,7 @@ class WebsocketDemoEvent implements ShouldBroadcast
      */
     public function __construct($dummydata)
     {
-        for($i= 0; $i <=10; $i++) {
-            echo $i;
-            
-            // $this->dummydata = $i;
-        }
-        return $i;
+        $this->dummydata = $dummydata;
         
     }
 

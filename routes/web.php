@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    broadcast(new WebsocketDqemoEvent('dummydata'));
+    broadcast(new WebsocketDemoEvent('dummydata'));
     return view('welcome');
 });
 
