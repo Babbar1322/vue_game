@@ -1,7 +1,7 @@
 <template>
     <div>
         <router-view />
-        <footer>
+        <footer v-if="this.$route.name != 'payment'">
             <taskbar :key="$route.fullPath" />
         </footer>
     </div>
@@ -32,9 +32,13 @@ export default {
         //     this.$router.push("/login");
         // }
         if (localStorage.usertoken) {
-            this.$router.push("/play");
+            // this.$router.push("/play");
         } else {
-            this.$router.push("/login");
+            if (this.$route.name == "invite") {
+                this.$router.push({ name: "invite" });
+            } else {
+                this.$router.push("/register");
+            }
         }
     }
 };

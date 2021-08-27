@@ -19,7 +19,9 @@ import PerfectScrollbar from 'vue2-perfect-scrollbar'
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
 
 import FullpageModal from 'vue-fullpage-modal'
-
+import Clipboard from 'v-clipboard'
+ 
+Vue.use(Clipboard)
 
 
 Vue.use(FullpageModal)

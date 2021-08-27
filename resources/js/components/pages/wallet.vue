@@ -63,6 +63,7 @@
                                                 type="success"
                                                 long
                                                 size="large"
+                                                @click="payment"
                                                 >Recharge
                                             </Button>
                                             <div class="mt-4 mb-2 text-center">
@@ -209,6 +210,11 @@ export default {
         return {
             mainProps: { width: 35 }
         };
+    },
+    methods: {
+        payment() {
+            this.$router.push("/payment");
+        }
     }
 };
 </script>

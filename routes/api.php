@@ -26,3 +26,6 @@ Route::get('profile','UserController@getAuthenticatedUser');
 Route::get('user','UserController@getUser');
 
 Route::post('bet/{id}','UserController@bet');
+Route::post('resetpwd/{id}','UserController@resetpwd');
+Route::post('resetname/{id}','UserController@resetname');
+Route::post('upload/{id}','UserController@upload');

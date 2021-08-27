@@ -10,7 +10,7 @@
                                 <b-img
                                     v-bind="mainProps"
                                     rounded="circle"
-                                    src="profile.jpg"
+                                    :src="`${image}`"
                                 ></b-img>
                                 <span class="pl-2 text-white">{{phone}}</span>
                             </b-col>
@@ -159,6 +159,7 @@
 export default {
     data() {
         return {
+            image:"profile.jpg",
             balance:"",
             phone:"",
             mainProps: { width: 50 }
@@ -200,6 +201,11 @@ export default {
                 }
                 this.balance = res.data.balance;
                 this.phone = res.data.user.phone;
+                   if (res.data.user.image == "" || res.data.user.image == null) {
+                    this.image = "profile.jpg";
+                } else {
+                    this.image = "/uploads/" + res.data.user.image;
+                }
                 
             })
             .catch(err => {

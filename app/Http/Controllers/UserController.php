@@ -16,6 +16,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Auth;
 use App\wallet;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -23,6 +24,7 @@ class UserController extends Controller
   
 
     public function register(Request $request){
+    
         $validator = Validator::make($request->all(), [
                 'phone' => 'required|string|',
                 'password' => 'required|string|min:6',
@@ -31,13 +33,31 @@ class UserController extends Controller
             if($validator->fails()){
                 return response()->json($validator->errors(), 400);
             }
-            
-          
+          $usr = User::where('is_admin','!=',1)->first();
+          $admin = User::where('is_admin',1)->first('UID'); 
+          $valid= User::where('UID',$request->sid)->first();
+          $validPhn = User::where('phone',$request->phone)->first();
+          if($validPhn){
+            return response()->json(['res'=>"User already exist"] ,400);
+          }
+          if(!$usr && !$request->sid){
+              $sid =  $admin->UID;
+          }
+          else{
+              if(!$valid){
+                  return response()->json(['res'=>"invalid invitation code"] ,400);
+              }
+              $sid = $request->sid;
+          }
+          $rand = mt_rand(10000, 99999);
+        
 
             $user = User::create([
                 'name'=> $request->name,
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
+                'UID'=>$rand,
+                'SID'=>$sid
             ]);
 
             $token = JWTAuth::fromUser($user);
@@ -74,12 +94,13 @@ class UserController extends Controller
         }catch (JWTException $e){
             return response()->json(['token_absent']);
         }
+        $totalperson = User::where('sid',$user->UID)->count();
         $credit = wallet::where('credit',1)->where('user_id',$user->id)->sum('balance');
         $debit = wallet::where('debit',1)->where('user_id',$user->id)->sum('balance');
         $balance = $credit - $debit;
         // $balance = wallet::where('user_id',$user->id)->where('credit',1)->sum('balance');
 
-        return response()->json(compact(['user','balance']));
+        return response()->json(compact(['user','balance','totalperson']));
     }
 
     public function adminLogin(){
@@ -175,6 +196,32 @@ class UserController extends Controller
         $debit = wallet::where('debit',1)->where('user_id',$id)->sum('balance');
         $balance = $credit - $debit;
         return response()->json([200,$balance]);
+    }
+
+    public function resetpwd($id,Request $request){
+        User::where('id',$id)->update([
+            'password'=>Hash::make($request->pwd)
+        ]);
+        return response()->json(200);
+    }
+    public function resetname($id,Request $request){
+        User::where('id',$id)->update([
+            'name'=>$request->name
+        ]);
+        return response()->json(200);
+    }
+
+    public function upload(Request $request,$id){
+        // $this->validate($request,[
+        //     'file'=> 'required|mimes:jpeg,png,jpg'
+        // ]);
+         $picName = time().'.'.$request->file->extension();
+        $request->file->move(public_path('uploads'),$picName);
+        $user = User::where('id',$id)->update([
+            'image'=> $picName
+        ]);
+
+        return $picName;
     }
     
 }

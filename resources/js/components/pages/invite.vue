@@ -28,7 +28,7 @@
                                     <b-col cols="3" class="text-center">
                                         <p class="text-white">Total People</p>
                                         <p class="text-warning ">
-                                            5
+                                            {{ people }}
                                         </p>
                                     </b-col>
                                     <b-col cols="4"></b-col>
@@ -66,7 +66,10 @@
                                 </div>
                                 <div class="mt-2 d-inline">
                                     <Input v-model="data.link" disabled>
-                                        <Button type="primary" slot="append"
+                                        <Button
+                                            type="primary"
+                                            slot="append"
+                                            v-clipboard="value"
                                             >Copy link</Button
                                         >
                                     </Input>
@@ -144,10 +147,39 @@
 export default {
     data() {
         return {
+            uid: "",
+            people: "",
             data: {
-                link: "https://www.cardimall01.com/?invite=503770"
+                link: ""
             }
         };
+    },
+    created() {
+        axios
+            .get("../../api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.uid = res.data.user.UID;
+                this.people = res.data.totalperson;
+                this.data.link =
+                    "http://localhost:8000/invite/" + res.data.user.UID;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    },
+    methods: {
+        value() {
+            this.i("link copied");
+            return this.data.link;
+        }
     }
 };
 </script>

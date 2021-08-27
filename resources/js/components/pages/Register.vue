@@ -36,6 +36,15 @@
                                     required
                                 ></b-form-input>
                             </b-input-group>
+                            <b-input-group class="text1 mt-2 mb-2">
+                                <b-form-input
+                                    class="cstminpt"
+                                    v-model="form.sid"
+                                    type="text"
+                                    placeholder="Invite Code"
+                                    required
+                                ></b-form-input>
+                            </b-input-group>
                             <div class="mt-4">
                                 <Button
                                     type="info"
@@ -67,9 +76,15 @@ export default {
             form: {
                 phone: "",
                 password: "",
-                select: "+91"
+                select: "+91",
+                sid: ""
             }
         };
+    },
+    mounted() {
+        if (this.$route.params.id) {
+            this.form.sid = this.$route.params.id;
+        }
     },
     methods: {
         register() {
@@ -82,7 +97,8 @@ export default {
             axios
                 .post("/api/register", {
                     phone: this.form.phone,
-                    password: this.form.password
+                    password: this.form.password,
+                    sid: this.form.sid
                 })
                 .then(res => {
                     console.log(res);
@@ -90,8 +106,11 @@ export default {
                     this.$router.push("/login");
                 })
                 .catch(err => {
-                    console.log(err);
-                    this.i("error while register");
+                    if (err.response.data.res) {
+                        this.i(err.response.data.res);
+                    } else {
+                        this.i("error while register");
+                    }
                 });
         }
     }

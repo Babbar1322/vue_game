@@ -10,7 +10,7 @@
                                 <b-img
                                     v-bind="mainProps"
                                     rounded="circle"
-                                    src="profile.jpg"
+                                    :src="`${image}`"
                                 ></b-img>
                                 <span class="pl-2 " style="color:#12dfe9">{{
                                     balance
@@ -280,6 +280,7 @@ import joinmodal from "./joinModal.vue";
 export default {
     data() {
         return {
+            image: "profile.jpg",
             balance: "",
             mainProps: { width: 35 },
             columns1: [
@@ -395,6 +396,11 @@ export default {
                     this.$router.push("/login");
                 }
                 this.balance = res.data.balance;
+                if (res.data.user.image == "" || res.data.user.image == null) {
+                    this.image = "profile.jpg";
+                } else {
+                    this.image = "/uploads/" + res.data.user.image;
+                }
             })
             .catch(err => {
                 console.log(err);

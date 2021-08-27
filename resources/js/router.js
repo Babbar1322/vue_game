@@ -17,6 +17,8 @@ import bankcard from './components/pages/bankcard.vue';
 import reset from './components/pages/resetpassword.vue';
 import user from './components/pages/user.vue';
 import resetname from './components/pages/resetname.vue';
+import avatar from './components/pages/avatar.vue';
+import payment from './components/pages/payment.vue';
 
 
 Vue.use(Router);
@@ -80,6 +82,21 @@ const routes = [
     {
         path:'/mine/user/info/nickname',
         component:resetname
+    },
+    {
+        path:'/mine/user/info/avatar',
+        component:avatar
+    },
+  
+    {
+        path:'/invite/:id',
+        component:register,
+        name:"invite"
+    },
+    {
+        path:'/payment',
+        component:payment,
+        name:"payment"
     },
   
     {

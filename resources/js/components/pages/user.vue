@@ -15,7 +15,7 @@
                     </b-row>
                     <div class="mt-4">
                         <div role="button" class="text-white">
-                            <b-row class="pb-2">
+                            <b-row class="pb-2" @click="avatar">
                                 <b-col cols="3">
                                     <div>
                                         Avatar
@@ -27,7 +27,7 @@
                                         <b-img
                                             v-bind="mainProps"
                                             rounded="circle"
-                                            src="../profile.jpg"
+                                            :src="`/uploads/${image}`"
                                         ></b-img>
                                         <Icon
                                             type="ios-arrow-forward"
@@ -48,7 +48,7 @@
                                 <b-col cols="6"></b-col>
                                 <b-col cols="3">
                                     <div class="text-right">
-                                        {{ phone }}
+                                        {{ name }}
                                         <Icon
                                             type="ios-arrow-forward"
                                             size="20"
@@ -70,12 +70,16 @@ export default {
         return {
             mainProps: { width: 30 },
             users: [],
-            phone: ""
+            name: "",
+            image: "../profile.jpg"
         };
     },
     methods: {
         resetname() {
             this.$router.push("/mine/user/info/nickname");
+        },
+        avatar() {
+            this.$router.push("/mine/user/info/avatar");
         }
     },
     created() {
@@ -90,8 +94,17 @@ export default {
                     this.auth = "";
                     this.$router.push("/login");
                 }
+                if (res.data.user.image == "" || res.data.user.image == null) {
+                    this.image = "../profile.jpg";
+                } else {
+                    this.image = "../uploads/" + res.data.user.image;
+                }
                 console.log(res);
-                this.phone = res.data.user.phone;
+                if (res.data.user.name == "" || res.data.user.name == null) {
+                    this.name = res.data.user.phone;
+                } else {
+                    this.name = res.data.user.name;
+                }
             })
             .catch(err => {
                 console.log(err);
