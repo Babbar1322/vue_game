@@ -9,12 +9,12 @@
                             <div class="text-warning">
                                 Step 1 : Copy UPI Information
                             </div>
-                            <label class="text-white">Account</label>
+                            <label class="text-white">Amount</label>
                             <b-input-group class="mb-3">
                                 <input
                                     type="text"
                                     class="form-control cstmform"
-                                    v-model="form.account"
+                                    v-model="form.amount"
                                 />
                                 <b-input-group-append>
                                     <b-button
@@ -67,13 +67,14 @@
                                 type="text"
                                 class="form-control cstmform"
                                 placeholder="REF NO."
+                                v-model="form.refno"
                             />
                             <small class="text-danger"
                                 >*Please enter Ref No. to complete to
                                 recharge.</small
                             >
                             <div class="text-center mt-3">
-                                <Button>Confirm REF No.</Button>
+                                <Button @click="modal">Confirm REF No.</Button>
                             </div>
                         </b-container>
                     </b-card>
@@ -81,6 +82,17 @@
                 <b-col md="4"></b-col>
             </b-row>
         </b-container>
+        <Modal v-model="modal1">
+            <div class="text-center">
+                <p>Amount:{{ form.amount }}</p>
+                <p>UPI Account:{{ form.upi }}</p>
+                <p>Ref No.:{{ form.refno }}</p>
+            </div>
+
+            <div slot="footer">
+                <Button @click="pay" :loading="loading">PAY</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -88,20 +100,72 @@
 export default {
     data() {
         return {
+            user_id: "",
+            loading: false,
+            modal1: false,
             form: {
-                account: "200.00",
-                upi: "abc123@upi"
+                amount: this.$route.params.amount,
+                upi: "abc123@upi",
+                refno: ""
             }
         };
+    },
+    created() {
+        axios
+            .get("/api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.user_id = res.data.user.id;
+            })
+            .catch(err => {
+                console.log(err);
+            });
     },
     methods: {
         value() {
             this.i("link copied");
-            return this.form.account;
+            return this.form.amount;
         },
         value1() {
             this.i("link copied");
             return this.form.upi;
+        },
+        modal() {
+            if (this.form.refno == "") {
+                this.i("please enter refernce no.");
+            } else {
+                this.modal1 = true;
+            }
+        },
+        pay() {
+            this.loading = true;
+            axios
+                .post("/api/payment/" + this.user_id, {
+                    amount: this.form.amount,
+                    upi: this.form.upi,
+                    refno: this.form.refno
+                })
+                .then(res => {
+                    console.log(res);
+                    this.loading = false;
+                    this.modal1 = false;
+
+                    this.s("payment request sent to admin");
+                    this.$router.push("/wallet");
+                })
+                .catch(err => {
+                    this.loading = false;
+                    this.modal1 = false;
+                    this.e(err.response.data.message);
+                    this.$router.push("/wallet");
+                });
         }
     }
 };

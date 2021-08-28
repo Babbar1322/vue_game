@@ -19,6 +19,7 @@ import user from './components/pages/user.vue';
 import resetname from './components/pages/resetname.vue';
 import avatar from './components/pages/avatar.vue';
 import payment from './components/pages/payment.vue';
+import test from './components/pages/test.vue';
 
 
 Vue.use(Router);
@@ -98,6 +99,12 @@ const routes = [
         component:payment,
         name:"payment"
     },
+    {
+        path:'/test',
+        component:test,
+        name:"test"
+    },
+
   
     {
         path:'/:notFound(.*)',

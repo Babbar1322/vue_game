@@ -29,3 +29,7 @@ Route::post('bet/{id}','UserController@bet');
 Route::post('resetpwd/{id}','UserController@resetpwd');
 Route::post('resetname/{id}','UserController@resetname');
 Route::post('upload/{id}','UserController@upload');
+Route::post('payment/{id}','PaymentController@payment');
+Route::post('time','PaymentController@storeTime');
+Route::get('timer','PaymentController@getTime');
+Route::post('game','GameController@store');

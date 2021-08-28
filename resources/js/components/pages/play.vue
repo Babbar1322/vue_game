@@ -54,7 +54,20 @@
                             <b-col cols="3">
                                 <div class="text-right">
                                     <div class="text-yellow">Count Down</div>
-                                    <div class="text-white">00:01:43</div>
+                                    <div class="text-white">
+                                        <vue-countdown-timer
+                                            :start-time="startTimer"
+                                            :end-time="endTimer"
+                                            :interval="1000"
+                                            label-position="begin"
+                                            :end-text="null"
+                                            :day-txt="null"
+                                            :hour-txt="':'"
+                                            :minutes-txt="':'"
+                                            :seconds-txt="null"
+                                        >
+                                        </vue-countdown-timer>
+                                    </div>
                                 </div>
                             </b-col>
                         </b-row>
@@ -64,7 +77,7 @@
                                     type="success"
                                     size="large"
                                     long
-                                    @click="joinModal('Join Green')"
+                                    @click="joinModal('Join Green', 'Green')"
                                     >Join Green</Button
                                 >
                             </b-col>
@@ -73,7 +86,7 @@
                                     type="warning"
                                     size="large"
                                     long
-                                    @click="joinModal('Join Violet')"
+                                    @click="joinModal('Join Violet', 'Violet')"
                                     >Join Violet</Button
                                 >
                             </b-col>
@@ -82,7 +95,7 @@
                                     type="error"
                                     size="large"
                                     long
-                                    @click="joinModal('Join Red')"
+                                    @click="joinModal('Join Red', 'Red')"
                                     >Join Red</Button
                                 >
                             </b-col>
@@ -95,7 +108,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 0')"
+                                    @click="joinModal('Select 0', '0')"
                                     >0</Button
                                 >
                             </b-col>
@@ -105,7 +118,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 1')"
+                                    @click="joinModal('Select 1', '1')"
                                     >1</Button
                                 >
                             </b-col>
@@ -115,7 +128,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 2')"
+                                    @click="joinModal('Select 2', '2')"
                                     >2</Button
                                 >
                             </b-col>
@@ -125,7 +138,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 3')"
+                                    @click="joinModal('Select 3', '3')"
                                     >3</Button
                                 >
                             </b-col>
@@ -135,7 +148,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 4')"
+                                    @click="joinModal('Select 4', '4')"
                                     >4</Button
                                 >
                             </b-col>
@@ -150,7 +163,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 5')"
+                                    @click="joinModal('Select 5', '5')"
                                     >5</Button
                                 >
                             </b-col>
@@ -160,7 +173,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 6')"
+                                    @click="joinModal('Select 6', '6')"
                                     >6</Button
                                 >
                             </b-col>
@@ -170,7 +183,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 7')"
+                                    @click="joinModal('Select 7', '7')"
                                     >7</Button
                                 >
                             </b-col>
@@ -180,7 +193,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 8')"
+                                    @click="joinModal('Select 8', '8')"
                                     >8</Button
                                 >
                             </b-col>
@@ -190,7 +203,7 @@
                                     ghost
                                     size="large"
                                     long
-                                    @click="joinModal('Select 9')"
+                                    @click="joinModal('Select 9', '9')"
                                     >9</Button
                                 >
                             </b-col>
@@ -270,6 +283,7 @@
                 </b-col>
                 <b-col md="2"></b-col>
             </b-row>
+            <Spin size="large" fix v-if="spinShow"></Spin>
         </b-container>
     </perfect-scrollbar>
 </template>
@@ -280,6 +294,12 @@ import joinmodal from "./joinModal.vue";
 export default {
     data() {
         return {
+            minutes: 0,
+            seconds: 0,
+            distance: 0,
+            spinShow: false,
+            startTimer: null,
+            endTimer: null,
             image: "profile.jpg",
             balance: "",
             mainProps: { width: 35 },
@@ -357,26 +377,22 @@ export default {
     },
     methods: {
         openModal() {
-            this.$FModal.show(
-                {
-                    component: rule
-                }
-                // {
-                //     msg: "Welcome to Your Vue.js App"
-                // }
-            );
+            this.$FModal.show({
+                component: rule
+            });
         },
-        joinModal(val) {
+        joinModal(val, val1) {
             this.$FModal.show(
                 {
                     component: joinmodal
                 },
-                { update: this.update },
 
                 {
                     msg: val,
-                    bal: this.balance
+                    colnums: val1,
+                    update: this.update
                 }
+                // { update: this.update }
             );
         },
         update(data) {
@@ -384,6 +400,11 @@ export default {
         }
     },
     created() {
+        axios.get("/api/timer").then(res => {
+            this.startTimer = parseInt(res.data.timer.start_time);
+            this.endTimer = parseInt(res.data.timer.end_time);
+            localStorage.setItem("time", res.data.timer.end_time);
+        });
         axios
             .get("/api/profile", {
                 headers: {
@@ -405,6 +426,32 @@ export default {
             .catch(err => {
                 console.log(err);
             });
+    },
+    mounted() {
+        var vm = this;
+
+        setInterval(function() {
+            var now = new Date().getTime();
+            vm.distance = localStorage.time - now;
+            var m = Math.floor(vm.distance % (1000 * 60 * 60)) / (1000 * 60);
+            vm.minutes = parseFloat(m).toFixed(0);
+            vm.seconds = Math.floor((vm.distance % (1000 * 60)) / 1000);
+            if (vm.minutes == 0 && vm.seconds == 18) {
+                vm.spinShow = true;
+            } else if (vm.minutes == 0 && vm.seconds == 0) {
+                vm.spinShow = false;
+            } else if (vm.seconds > 29) {
+                vm.minutes -= 1;
+            } else if (vm.seconds < 10) {
+                vm.seconds = "0" + vm.seconds;
+            }
+
+            if (vm.distance < 0) {
+                if (vm.distance < -1000 * 60 * 24 * 1) {
+                    vm.countDownDate += 1000 * 60 * 60 * 24 * 1 * 365;
+                }
+            }
+        }, 1000);
     }
 };
 </script>

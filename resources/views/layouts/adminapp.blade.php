@@ -209,6 +209,9 @@
                             <li class="scroll">
                                 <a href="{{route('admin.level')}}" class="{{ request()->is('admin/levels') ? 'active' : '' }}" ><img src="{{asset('admin/assets/images/svg-icon/dashboard.svg')}}" class="img-fluid" alt="dashboard"><span>Level</span></a>
                             </li>
+                            <li class="scroll">
+                                <a href="{{route('admin.userPayment')}}" class="{{ request()->is('admin/userPayment') ? 'active' : '' }}" ><img src="{{asset('admin/assets/images/svg-icon/dashboard.svg')}}" class="img-fluid" alt="dashboard"><span>User Payment</span></a>
+                            </li>
                            
                         </ul>
                         </div>

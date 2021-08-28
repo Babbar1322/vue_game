@@ -10,11 +10,11 @@
                                 <b-img
                                     v-bind="mainProps"
                                     rounded="circle"
-                                    src="profile.jpg"
+                                    :src="`${image}`"
                                 ></b-img>
-                                <span class="pl-2 " style="color:#12dfe9"
-                                    >0.99</span
-                                >
+                                <span class="pl-2 " style="color:#12dfe9">{{
+                                    balance
+                                }}</span>
                             </b-col>
                             <b-col cols="3"></b-col>
                             <b-col cols="3">
@@ -49,7 +49,7 @@
                                     <div>
                                         <!-- <Icon type="ios-card-outline" /> -->
                                         <Input
-                                            v-model="value"
+                                            v-model="amount"
                                             placeholder="300-50000"
                                             size="large"
                                             className="cstminp"
@@ -208,12 +208,46 @@
 export default {
     data() {
         return {
-            mainProps: { width: 35 }
+            image: "profile.jpg",
+            balance: "",
+            mainProps: { width: 35 },
+            amount: ""
         };
+    },
+    created() {
+        axios
+            .get("/api/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.usertoken}`
+                }
+            })
+            .then(res => {
+                if (res.data[0] == "token_expired") {
+                    this.auth = "";
+                    this.$router.push("/login");
+                }
+                this.balance = res.data.balance;
+                if (res.data.user.image == "" || res.data.user.image == null) {
+                    this.image = "profile.jpg";
+                } else {
+                    this.image = "/uploads/" + res.data.user.image;
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
     },
     methods: {
         payment() {
-            this.$router.push("/payment");
+            if (this.amount < 300) {
+                this.amount = "";
+                this.i("amount should be greater than or equal to 300");
+            } else {
+                this.$router.push({
+                    name: "payment",
+                    params: { amount: this.amount }
+                });
+            }
         }
     }
 };

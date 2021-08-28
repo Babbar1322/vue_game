@@ -35,6 +35,9 @@ Route::post('admin/storeLevel','LevelController@storeLevel')->name('admin.storeL
 Route::get('admin/editLevel/{id}','LevelController@editLevel')->name('admin.editLevel');
 Route::post('admin/updateLevel/{id}','LevelController@updateLevel')->name('admin.updateLevel');
 Route::get('admin/deleteLevel/{id}','LevelController@deleteLevel')->name('admin.deleteLevel');
+Route::get("admin/userPayment","PaymentController@index")->name('admin.userPayment');
+Route::post("admin/acceptPay","PaymentController@accept")->name('admin.accept');
+Route::post("admin/rejectPay","PaymentController@reject")->name('admin.reject');
 });
 Route::post("/admin/logout",function(){
     Auth::logout();

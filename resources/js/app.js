@@ -22,6 +22,8 @@ import FullpageModal from 'vue-fullpage-modal'
 import Clipboard from 'v-clipboard'
  
 Vue.use(Clipboard)
+import VueCountdownTimer from 'vuejs-countdown-timer';
+Vue.use(VueCountdownTimer);
 
 
 Vue.use(FullpageModal)
